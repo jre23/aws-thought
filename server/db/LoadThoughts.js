@@ -8,7 +8,7 @@ AWS.config.update({
   endpoint: "http://localhost:8000",
 });
 // create the dynamodb service object using the DynamoDB.DocumentClient() class. This class offers a level of abstraction that enables us to use JavaScript objects as arguments and return native JavaScript types. This constructor helps map objects, which reduces impedance mismatching and speeds up the development process. specifying the API version ensures compatibility and latest long-term support version (LTS)
-const dynamodb = new AWS.DynamoDB.DocumentClient({ apiVersion: "2012-08-10" });
+const dynamodb = new AWS.DynamoDB.DocumentClient();
 // alert user of progress
 console.log("Importing thoughts into DynamoDB. Please wait.");
 // use node file-system to return the contents of the users.json seed file

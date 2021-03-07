@@ -1,19 +1,21 @@
 // require dependencies
 const express = require("express");
 const router = express.Router();
-const AWS = require("aws-sdk");
 // config points to local instance,
 // updates local environmental variables
-AWS.config.update({
+const AWS = require("aws-sdk");
+const awsConfig = {
   region: "us-east-2",
   endpoint: "http://localhost:8000",
-});
-// create the dynamodb service object using the DynamoDB.DocumentClient() class. This class offers a level of abstraction that enables us to use JavaScript objects as arguments and return native JavaScript types. This constructor helps map objects, which reduces impedance mismatching and speeds up the development process. specifying the API version ensures compatibility and latest long-term support version (LTS)
+};
+AWS.config.update(awsConfig);
+// create the dynamodb service object using the DynamoDB.DocumentClient() class. This class offers a level of abstraction that enables us to use JavaScript objects as arguments and return native JavaScript types. This constructor helps map objects, which reduces impedance mismatching and speeds up the development process.
 const dynamodb = new AWS.DynamoDB.DocumentClient();
-// get all users' thoughts
+const table = "Thoughts";
+// route to get all users' thoughts
 router.get("/users", (req, res) => {
   const params = {
-    TableName: "Thoughts",
+    TableName: table,
   };
   dynamodb.scan(params, (err, data) => {
     if (err) {
