@@ -17,11 +17,12 @@ router.get("/users", (req, res) => {
   const params = {
     TableName: table,
   };
+  // the scan operation returns one or more items and item attributes by accessing every item in a table or a secondary index.
   dynamodb.scan(params, (err, data) => {
     if (err) {
       res.status(500).json(err); // an error occurred
     } else {
-      res.json(data.Items);
+      res.json(data.Items); // Item property is set in the LoadThoughts.js db model
     }
   });
 });
