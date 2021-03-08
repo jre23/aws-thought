@@ -5,6 +5,6 @@ const fileRoutes = require("./file-upload");
 // user routes
 router.use("/users", userRoutes);
 // file upload routes
-router.use(fileRoutes);
+router.use("/image-upload", fileRoutes);
 
 module.exports = router;
