@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import ThoughtList from '../components/ThoughtList';
-import ThoughtForm from '../components/ThoughtForm';
+import React, { useState, useEffect } from "react";
+import ThoughtList from "../components/ThoughtList";
+import ThoughtForm from "../components/ThoughtForm";
 
 const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
@@ -10,13 +10,19 @@ const Home = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await fetch('/api/users');
-      const data = await res.json();
-      // sort the array by createdAt property ordered by descending values
-      const orderData = data.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
-      setThoughts(orderData);
-      setIsLoaded(true);
-    }
+      try {
+        const res = await fetch("/api/users");
+        const userData = await res.json();
+        // sort the array by createdAt property ordered by descending values
+        const sortData = userData.sort((a, b) =>
+          a.createdAt < b.createdAt ? 1 : -1
+        );
+        setThoughts([...sortData]);
+        setIsLoaded(true);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     fetchData();
   }, []);
 
@@ -30,8 +36,11 @@ const Home = () => {
           {!isLoaded ? (
             <div>Loading...</div>
           ) : (
-              <ThoughtList thoughts={thoughts} title="Some Feed for Thought(s)..." />
-            )}
+            <ThoughtList
+              thoughts={thoughts}
+              title="Some Feed for Thought(s)..."
+            />
+          )}
         </div>
       </div>
     </main>
