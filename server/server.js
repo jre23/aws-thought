@@ -1,8 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
-const fileRoutes = require("./routes/file-upload");
-const userRoutes = require("./routes/api/user-routes");
+const routes = require("./routes");
 
 // express middleware, used to be bodyparser
 app.use(express.json());
@@ -14,8 +13,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // app.use(require('./routes'));
-app.use("/api/", fileRoutes);
-app.use("/api/", userRoutes);
+app.use(routes);
 
 // Start the API server
 app.listen(PORT, () =>

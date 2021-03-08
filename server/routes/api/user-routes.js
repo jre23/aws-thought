@@ -13,7 +13,7 @@ AWS.config.update(awsConfig);
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 const table = "Thoughts";
 // route to get all users' thoughts
-router.get("/users", (req, res) => {
+router.get("/", (req, res) => {
   const params = {
     TableName: table,
   };
@@ -27,8 +27,8 @@ router.get("/users", (req, res) => {
   });
 });
 
-// get thoughts from a user
-router.get("/users/:username", (req, res) => {
+// get thoughts from a single user
+router.get("/:username", (req, res) => {
   console.log(`Querying for thought(s) from ${req.params.username}.`);
   const params = {
     TableName: table,
@@ -42,6 +42,7 @@ router.get("/users/:username", (req, res) => {
       ":user": req.params.username,
     },
     ProjectionExpression: "#th, #ca",
+    ScanIndexForward: false, // default value is true, which sorts ascending. set to false for descending (most recent posts on top)
   };
 
   dynamodb.query(params, (err, data) => {
@@ -55,8 +56,8 @@ router.get("/users/:username", (req, res) => {
   });
 });
 
-// Create new user
-router.post("/users", (req, res) => {
+// route to create a new user
+router.post("/", (req, res) => {
   const params = {
     TableName: table,
     Item: {
@@ -106,7 +107,7 @@ router.post("/users", (req, res) => {
 // });
 
 // Destroy
-router.delete("/users/:time/:username", (req, res) => {
+router.delete("/:time/:username", (req, res) => {
   const username = "Ray Davis";
   const time = 1602466687289;
   const thought =
@@ -142,7 +143,7 @@ router.delete("/users/:time/:username", (req, res) => {
 });
 
 // // update
-// router.put('/users/:username', (req, res) => {
+// router.put('/:username', (req, res) => {
 //   res.json({ "which": "which" })
 // });
 // const { time, username } = req.params;
