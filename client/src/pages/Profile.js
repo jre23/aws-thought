@@ -27,11 +27,9 @@ const Profile = (props) => {
     const fetchData = async () => {
       try {
         const res = await fetch(`/api/users/${userParam}`);
-        const data = await res.json();
-        // sort the array by createdAt property ordered by descending values
-        // const orderData = data.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
-        console.log(data);
-        setThoughts(data);
+        const userData = await res.json();
+        console.log(userData);
+        setThoughts([...userData]);
         setIsLoaded(true);
       } catch (error) {
         console.log(error);
