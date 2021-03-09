@@ -23,6 +23,7 @@ router.get("/", (req, res) => {
     if (err) {
       res.status(500).json(err); // an error occurred
     } else {
+      console.log(data.Items);
       res.json(data.Items); // Item property is set in the LoadThoughts.js db model
     }
   });
@@ -43,7 +44,7 @@ router.get("/:username", (req, res) => {
     ExpressionAttributeValues: {
       ":user": req.params.username,
     },
-    ProjectionExpression: "#th, #ca",
+    ProjectionExpression: "#th, #ca, #un",
     ScanIndexForward: false, // default value is true, which sorts ascending. set to false for descending (most recent posts on top)
   };
   dynamodb.query(params, (err, data) => {
