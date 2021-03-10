@@ -44,6 +44,7 @@ router.get("/:username", (req, res) => {
     ExpressionAttributeValues: {
       ":user": req.params.username,
     },
+    // determine which attributes to return
     ProjectionExpression: "#th, #ca, #un",
     ScanIndexForward: false, // default value is true, which sorts ascending. set to false for descending (most recent posts on top)
   };
@@ -58,7 +59,7 @@ router.get("/:username", (req, res) => {
   });
 });
 
-// route to create a new user
+// route to create a new user/thought
 // matches with /api/users POST
 router.post("/", (req, res) => {
   const params = {
@@ -83,26 +84,14 @@ router.post("/", (req, res) => {
   });
 });
 
-// Destroy
+// route to delete a user
 // matches with /api/users/:time/:username DELETE
 router.delete("/:time/:username", (req, res) => {
-  const username = "Ray Davis";
-  const time = 1602466687289;
-  const thought =
-    "Tolerance only for those who agree with you is no tolerance at all.";
-
   const params = {
     TableName: table,
     Key: {
-      username: username,
-      createdAt: time,
-    },
-    KeyConditionExpression: "#ca = :time",
-    ExpressionAttributeNames: {
-      "#ca": "createdAt",
-    },
-    ExpressionAttributeValues: {
-      ":time": time,
+      username: req.params.username,
+      createdAt: parseInt(req.params.time),
     },
   };
 

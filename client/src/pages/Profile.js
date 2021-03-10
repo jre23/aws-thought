@@ -23,20 +23,45 @@ const Profile = (props) => {
     },
   ]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const deleteThought = (timeCreated, userName) => {
+    console.log(timeCreated);
+    console.log(userName);
+    let deleteBool = window.confirm(
+      "Are you sure you want to delete this thought?"
+    );
+    if (deleteBool) {
       try {
-        const res = await fetch(`/api/users/${userParam}`);
-        const userData = await res.json();
-        console.log(userData);
-        setThoughts([...userData]);
-        setIsLoaded(true);
+        fetch("/api/users/" + timeCreated + "/" + userName, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
       } catch (error) {
         console.log(error);
+      } finally {
+        fetchData();
       }
-    };
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`/api/users/${userParam}`);
+      const userData = await res.json();
+      console.log(userData);
+      setThoughts([...userData]);
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
     fetchData();
-  }, [userParam]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -54,13 +79,14 @@ const Profile = (props) => {
             <ThoughtList
               thoughts={thoughts}
               title={`${userParam}'s thoughts...`}
+              deleteThought={deleteThought}
             />
           )}
         </div>
       </div>
       <div className="mb-3">
         {" "}
-        <ThoughtForm name={userParam} />
+        <ThoughtForm name={userParam} fetchData={fetchData} />
       </div>
     </div>
   );
