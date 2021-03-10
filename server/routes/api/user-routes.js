@@ -23,7 +23,6 @@ router.get("/", (req, res) => {
     if (err) {
       res.status(500).json(err); // an error occurred
     } else {
-      console.log(data.Items);
       res.json(data.Items); // Item property is set in the LoadThoughts.js db model
     }
   });
@@ -94,8 +93,6 @@ router.delete("/:time/:username", (req, res) => {
       createdAt: parseInt(req.params.time),
     },
   };
-
-  console.log("Attempting a conditional delete...");
   dynamodb.delete(params, (err, data) => {
     if (err) {
       console.error(
@@ -104,7 +101,8 @@ router.delete("/:time/:username", (req, res) => {
       );
       res.status(500).json(err); // an error occurred
     } else {
-      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+      console.log("DeleteItem succeeded:", JSON.stringify(data));
+      res.json({ Deleted: JSON.stringify(data, null, 2) });
     }
   });
 });

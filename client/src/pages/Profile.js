@@ -4,15 +4,7 @@ import { useParams } from "react-router-dom";
 import ThoughtForm from "../components/ThoughtForm";
 import ThoughtList from "../components/ThoughtList";
 
-const AWS = require("aws-sdk");
-const awsConfig = {
-  region: "us-east-2",
-  endpoint: "http://localhost:8000",
-};
-
-AWS.config.update(awsConfig);
-
-const Profile = (props) => {
+const Profile = () => {
   const { username: userParam } = useParams();
   const [isLoaded, setIsLoaded] = useState(false);
   const [thoughts, setThoughts] = useState([
@@ -23,7 +15,7 @@ const Profile = (props) => {
     },
   ]);
 
-  const deleteThought = (timeCreated, userName) => {
+  const deleteThought = async (timeCreated, userName) => {
     console.log(timeCreated);
     console.log(userName);
     let deleteBool = window.confirm(
@@ -31,22 +23,26 @@ const Profile = (props) => {
     );
     if (deleteBool) {
       try {
-        fetch("/api/users/" + timeCreated + "/" + userName, {
+        const res = await fetch("/api/users/" + timeCreated + "/" + userName, {
           method: "DELETE",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
         });
+        const userData = await res.json();
+        console.log(userData);
       } catch (error) {
         console.log(error);
       } finally {
+        console.log("====finally====");
         fetchData();
       }
     }
   };
 
   const fetchData = async () => {
+    console.log("====fetchData====");
     try {
       const res = await fetch(`/api/users/${userParam}`);
       const userData = await res.json();

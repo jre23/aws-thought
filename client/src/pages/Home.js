@@ -4,27 +4,9 @@ import ThoughtForm from "../components/ThoughtForm";
 
 const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [thoughts, setThoughts] = useState([]);
+  const [thoughts, setThoughts] = useState([{}]);
 
-  // const loggedIn = Auth.loggedIn();
-
-  const fetchData = async () => {
-    console.log("====fetchData====");
-    try {
-      const res = await fetch("/api/users");
-      const userData = await res.json();
-      // sort the array by createdAt property ordered by descending values
-      const sortData = userData.sort((a, b) =>
-        a.createdAt < b.createdAt ? 1 : -1
-      );
-      setThoughts([...sortData]);
-      setIsLoaded(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const deleteThought = (timeCreated, userName) => {
+  const deleteThought = async (timeCreated, userName) => {
     console.log(timeCreated);
     console.log(userName);
     let deleteBool = window.confirm(
@@ -32,18 +14,38 @@ const Home = () => {
     );
     if (deleteBool) {
       try {
-        fetch("/api/users/" + timeCreated + "/" + userName, {
+        const res = await fetch("/api/users/" + timeCreated + "/" + userName, {
           method: "DELETE",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
         });
+        const userData = await res.json();
+        console.log(userData);
       } catch (error) {
         console.log(error);
       } finally {
+        console.log("====finally====");
         fetchData();
       }
+    }
+  };
+
+  const fetchData = async () => {
+    console.log("====fetchData====");
+    try {
+      const res = await fetch("/api/users");
+      const userData = await res.json();
+      // sort the array by createdAt property ordered by descending values
+      const sortData = await userData.sort((a, b) =>
+        a.createdAt < b.createdAt ? 1 : -1
+      );
+      console.log(sortData);
+      setThoughts([...sortData]);
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
     }
   };
 
