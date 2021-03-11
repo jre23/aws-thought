@@ -1,7 +1,7 @@
 // Load the AWS SDK for Node.js
 const AWS = require("aws-sdk");
 // uuid package to create a unique S3 bucket
-const { v4: uuidv4 } = require("uuid");
+const { uuidv4 } = require("uuid");
 // Set the region
 AWS.config.update({ region: "us-east-2" });
 // Create S3 service object
