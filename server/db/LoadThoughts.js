@@ -5,7 +5,6 @@ const fs = require("fs");
 // updates local environmental variables
 AWS.config.update({
   region: "us-east-2",
-  endpoint: "http://localhost:8000",
 });
 // create the dynamodb service object using the DynamoDB.DocumentClient() class. This class offers a level of abstraction that enables us to use JavaScript objects as arguments and return native JavaScript types. This constructor helps map objects, which reduces impedance mismatching and speeds up the development process. specifying the API version ensures compatibility and latest long-term support version (LTS)
 const dynamodb = new AWS.DynamoDB.DocumentClient();
