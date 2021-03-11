@@ -6,7 +6,6 @@ const router = express.Router();
 const AWS = require("aws-sdk");
 const awsConfig = {
   region: "us-east-2",
-  endpoint: "http://localhost:8000",
 };
 AWS.config.update(awsConfig);
 // create the dynamodb service object using the DynamoDB.DocumentClient() class. This class offers a level of abstraction that enables us to use JavaScript objects as arguments and return native JavaScript types. This constructor helps map objects, which reduces impedance mismatching and speeds up the development process.
@@ -43,7 +42,8 @@ router.get("/:username", (req, res) => {
     ExpressionAttributeValues: {
       ":user": req.params.username,
     },
-    ProjectionExpression: "#th, #ca",
+    // determine which attributes to return
+    ProjectionExpression: "#th, #ca, #un",
     ScanIndexForward: false, // default value is true, which sorts ascending. set to false for descending (most recent posts on top)
   };
   dynamodb.query(params, (err, data) => {
@@ -57,7 +57,7 @@ router.get("/:username", (req, res) => {
   });
 });
 
-// route to create a new user
+// route to create a new user/thought
 // matches with /api/users POST
 router.post("/", (req, res) => {
   const params = {
@@ -82,30 +82,16 @@ router.post("/", (req, res) => {
   });
 });
 
-// Destroy
+// route to delete a user
 // matches with /api/users/:time/:username DELETE
 router.delete("/:time/:username", (req, res) => {
-  const username = "Ray Davis";
-  const time = 1602466687289;
-  const thought =
-    "Tolerance only for those who agree with you is no tolerance at all.";
-
   const params = {
     TableName: table,
     Key: {
-      username: username,
-      createdAt: time,
-    },
-    KeyConditionExpression: "#ca = :time",
-    ExpressionAttributeNames: {
-      "#ca": "createdAt",
-    },
-    ExpressionAttributeValues: {
-      ":time": time,
+      username: req.params.username,
+      createdAt: parseInt(req.params.time),
     },
   };
-
-  console.log("Attempting a conditional delete...");
   dynamodb.delete(params, (err, data) => {
     if (err) {
       console.error(
@@ -114,7 +100,8 @@ router.delete("/:time/:username", (req, res) => {
       );
       res.status(500).json(err); // an error occurred
     } else {
-      console.log("DeleteItem succeeded:", JSON.stringify(data, null, 2));
+      console.log("DeleteItem succeeded:", JSON.stringify(data));
+      res.json({ Deleted: JSON.stringify(data, null, 2) });
     }
   });
 });

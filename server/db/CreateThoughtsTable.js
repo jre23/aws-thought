@@ -5,7 +5,6 @@ const AWS = require("aws-sdk");
 // updates local environmental variables
 AWS.config.update({
   region: "us-east-2",
-  endpoint: "http://localhost:8000",
 });
 // create the dynamodb service object using the DynamoDB class. specifying the API version ensures compatibility and latest long-term support version (LTS)
 const dynamodb = new AWS.DynamoDB({ apiVersion: "2012-08-10" });

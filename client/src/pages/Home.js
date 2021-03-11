@@ -1,22 +1,55 @@
-import React, { useState, useEffect } from 'react';
-import ThoughtList from '../components/ThoughtList';
-import ThoughtForm from '../components/ThoughtForm';
+import React, { useState, useEffect } from "react";
+import ThoughtList from "../components/ThoughtList";
+import ThoughtForm from "../components/ThoughtForm";
 
 const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [thoughts, setThoughts] = useState([]);
+  const [thoughts, setThoughts] = useState([{}]);
 
-  // const loggedIn = Auth.loggedIn();
+  const deleteThought = async (timeCreated, userName) => {
+    console.log(timeCreated);
+    console.log(userName);
+    let deleteBool = window.confirm(
+      "Are you sure you want to delete this thought?"
+    );
+    if (deleteBool) {
+      try {
+        const res = await fetch("/api/users/" + timeCreated + "/" + userName, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = await res.json();
+        console.log(userData);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        console.log("====finally====");
+        fetchData();
+      }
+    }
+  };
+
+  const fetchData = async () => {
+    console.log("====fetchData====");
+    try {
+      const res = await fetch("/api/users");
+      const userData = await res.json();
+      // sort the array by createdAt property ordered by descending values
+      const sortData = await userData.sort((a, b) =>
+        a.createdAt < b.createdAt ? 1 : -1
+      );
+      console.log(sortData);
+      setThoughts([...sortData]);
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('/api/users');
-      const data = await res.json();
-      // sort the array by createdAt property ordered by descending values
-      const orderData = data.sort((a, b) => (a.createdAt < b.createdAt) ? 1 : -1);
-      setThoughts(orderData);
-      setIsLoaded(true);
-    }
     fetchData();
   }, []);
 
@@ -24,14 +57,18 @@ const Home = () => {
     <main>
       <div className="flex-row justify-space-between">
         <div className="col-12 mb-3">
-          <ThoughtForm />
+          <ThoughtForm fetchData={fetchData} />
         </div>
         <div className={`col-12 mb-3 `}>
           {!isLoaded ? (
             <div>Loading...</div>
           ) : (
-              <ThoughtList thoughts={thoughts} title="Some Feed for Thought(s)..." />
-            )}
+            <ThoughtList
+              thoughts={thoughts}
+              title="Some Feed for Thought(s)..."
+              deleteThought={deleteThought}
+            />
+          )}
         </div>
       </div>
     </main>
