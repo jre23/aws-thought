@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const userRoutes = require("./user-routes");
-const fileRoutes = require("./file-upload");
+const imageRoutes = require("./image-upload");
 
 // user routes
 router.use("/users", userRoutes);
 // file upload routes
-router.use("/image-upload", fileRoutes);
+router.use("/image-upload", imageRoutes);
 
 module.exports = router;
