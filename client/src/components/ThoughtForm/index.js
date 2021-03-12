@@ -44,32 +44,36 @@ const ThoughtForm = ({ fetchData }) => {
   const handleImageUpload = (event) => {
     event.preventDefault();
     const data = new FormData();
-    // add the image data to the form data object
-    data.append("image", fileInput.current.files[0]);
-    // api call to image-upload route
-    const postImage = async () => {
-      try {
-        const res = await fetch("/api/image-upload", {
-          mode: "cors",
-          method: "POST",
-          body: data,
-        });
-        if (!res.ok) throw new Error(res.statusText);
-        const postResponse = await res.json();
-        setFormState({ ...formState, image: postResponse.Location });
-        return postResponse.Location;
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    postImage();
+    if (fileInput.current.files.length > 0) {
+      // add the image data to the form data object
+      data.append("image", fileInput.current.files[0]);
+      // api call to image-upload route
+      const postImage = async () => {
+        try {
+          const res = await fetch("/api/image-upload", {
+            mode: "cors",
+            method: "POST",
+            body: data,
+          });
+          if (!res.ok) throw new Error(res.statusText);
+          const postResponse = await res.json();
+          setFormState({ ...formState, image: postResponse.Location });
+          window.alert("Image uploaded!");
+          return postResponse.Location;
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      postImage();
+    } else {
+      window.alert("Choose an image to upload!");
+    }
   };
 
   return (
     <div>
       <p className={`m-0 ${characterCount === 280 ? "text-error" : ""}`}>
         Character Count: {characterCount}/280
-        {/* {error && <span className="ml-2">Something went wrong...</span>} */}
       </p>
       <form
         className="flex-row justify-center justify-space-between-md align-stretch"
@@ -80,6 +84,7 @@ const ThoughtForm = ({ fetchData }) => {
           name="username"
           value={formState.username}
           className="form-input col-12 col-md-9"
+          required
           onChange={handleChange}
         ></input>
         <textarea
@@ -87,6 +92,7 @@ const ThoughtForm = ({ fetchData }) => {
           name="thought"
           value={formState.thought}
           className="form-input col-12 col-md-9"
+          required
           onChange={handleChange}
         ></textarea>
         <label className="form-input col-12 p-1">
