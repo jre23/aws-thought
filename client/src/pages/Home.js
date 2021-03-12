@@ -7,8 +7,6 @@ const Home = () => {
   const [thoughts, setThoughts] = useState([{}]);
 
   const deleteThought = async (timeCreated, userName) => {
-    console.log(timeCreated);
-    console.log(userName);
     let deleteBool = window.confirm(
       "Are you sure you want to delete this thought?"
     );
@@ -33,7 +31,6 @@ const Home = () => {
   };
 
   const fetchData = async () => {
-    console.log("====fetchData====");
     try {
       const res = await fetch("/api/users");
       const userData = await res.json();

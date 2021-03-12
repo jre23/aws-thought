@@ -21,12 +21,37 @@ const ThoughtList = ({ thoughts, title, deleteThought }) => {
                 {new Date(parseInt(thought.createdAt)).toString()}
               </Link>{" "}
             </p>
-            <p className="px-2">{thought.thought}</p>
-            <button
-              onClick={() => deleteThought(thought.createdAt, thought.username)}
-            >
-              X
-            </button>
+            {thought.thought && (
+              <p className="px-2">
+                {thought.thought}
+                <button
+                  className="mt-1"
+                  style={{ float: "right" }}
+                  onClick={() =>
+                    deleteThought(thought.createdAt, thought.username)
+                  }
+                >
+                  X
+                </button>
+              </p>
+            )}
+            {thought.image && (
+              <div>
+                <p className="px-2">
+                  <img
+                    className="mt-3 ml-4 thought-image"
+                    style={{
+                      maxHeight: "500px",
+                      maxWidth: "500px",
+                      objectFit: "contain",
+                    }}
+                    src={thought.image}
+                    alt="S3 bucket response"
+                  />
+                </p>
+              </div>
+            )}
+            <div style={{ clear: "both" }}></div>
           </div>
         ))}
     </div>
