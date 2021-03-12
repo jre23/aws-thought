@@ -27,7 +27,6 @@ const ThoughtForm = ({ fetchData }) => {
           body: JSON.stringify(formState),
         });
         const thoughtData = await res.json();
-        console.log(thoughtData);
       } catch (error) {
         console.log(error);
       } finally {

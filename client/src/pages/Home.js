@@ -20,11 +20,9 @@ const Home = () => {
           },
         });
         const userData = await res.json();
-        console.log(userData);
       } catch (error) {
         console.log(error);
       } finally {
-        console.log("====finally====");
         fetchData();
       }
     }
@@ -38,7 +36,6 @@ const Home = () => {
       const sortData = await userData.sort((a, b) =>
         a.createdAt < b.createdAt ? 1 : -1
       );
-      console.log(sortData);
       setThoughts([...sortData]);
       setIsLoaded(true);
     } catch (error) {

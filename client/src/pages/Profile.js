@@ -16,8 +16,6 @@ const Profile = () => {
   ]);
 
   const deleteThought = async (timeCreated, userName) => {
-    console.log(timeCreated);
-    console.log(userName);
     let deleteBool = window.confirm(
       "Are you sure you want to delete this thought?"
     );
@@ -31,22 +29,18 @@ const Profile = () => {
           },
         });
         const userData = await res.json();
-        console.log(userData);
       } catch (error) {
         console.log(error);
       } finally {
-        console.log("====finally====");
         fetchData();
       }
     }
   };
 
   const fetchData = async () => {
-    console.log("====fetchData====");
     try {
       const res = await fetch(`/api/users/${userParam}`);
       const userData = await res.json();
-      console.log(userData);
       setThoughts([...userData]);
       setIsLoaded(true);
     } catch (error) {

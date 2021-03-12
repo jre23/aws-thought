@@ -22,7 +22,7 @@ const ThoughtList = ({ thoughts, title, deleteThought }) => {
               </Link>{" "}
             </p>
             {thought.thought && (
-              <p className="px-2">
+              <p className="px-2 ml-3">
                 {thought.thought}
                 <button
                   className="mt-1"
@@ -39,7 +39,7 @@ const ThoughtList = ({ thoughts, title, deleteThought }) => {
               <div>
                 <p className="px-2">
                   <img
-                    className="mt-3 ml-4 thought-image"
+                    className="mt-2 ml-3 thought-image"
                     style={{
                       maxHeight: "500px",
                       maxWidth: "500px",
