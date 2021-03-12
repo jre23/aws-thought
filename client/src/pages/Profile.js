@@ -21,14 +21,13 @@ const Profile = () => {
     );
     if (deleteBool) {
       try {
-        const res = await fetch("/api/users/" + timeCreated + "/" + userName, {
+        await fetch("/api/users/" + timeCreated + "/" + userName, {
           method: "DELETE",
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
           },
         });
-        const userData = await res.json();
       } catch (error) {
         console.log(error);
       } finally {

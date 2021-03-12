@@ -16,7 +16,6 @@ const upload = multer({ storage }).single("image");
 const s3 = new AWS.S3({ apiVersion: "2006-03-01" });
 // route to post an image. matches with /api/image-upload POST
 router.post("/", upload, (req, res) => {
-  console.log("====image upload====");
   const params = paramsConfig(req.file);
   s3.upload(params, (err, data) => {
     if (err) {
