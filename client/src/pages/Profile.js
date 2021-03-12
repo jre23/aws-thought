@@ -1,0 +1,119 @@
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+
+import ThoughtForm from "../components/ThoughtForm";
+import ThoughtList from "../components/ThoughtList";
+
+const Profile = () => {
+  const { username: userParam } = useParams();
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [thoughts, setThoughts] = useState([
+    {
+      username: userParam,
+      createdAt: "",
+      thought: "",
+    },
+  ]);
+
+  const deleteThought = async (timeCreated, userName) => {
+    let deleteBool = window.confirm(
+      "Are you sure you want to delete this thought?"
+    );
+    if (deleteBool) {
+      try {
+        const res = await fetch("/api/users/" + timeCreated + "/" + userName, {
+          method: "DELETE",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        });
+        const userData = await res.json();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        fetchData();
+      }
+    }
+  };
+
+  const fetchData = async () => {
+    try {
+      const res = await fetch(`/api/users/${userParam}`);
+      const userData = await res.json();
+      setThoughts([...userData]);
+      setIsLoaded(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div>
+      <div className="flex-row mb-3">
+        <h2 className="bg-dark text-secondary p-3 display-inline-block">
+          Viewing {userParam ? `${userParam}'s` : "your"} profile.
+        </h2>
+      </div>
+
+      <div className="flex-row justify-space-between mb-3">
+        <div className="col-12 mb-3 col-lg-8">
+          {!isLoaded ? (
+            <div>Loading...</div>
+          ) : (
+            <ThoughtList
+              thoughts={thoughts}
+              title={`${userParam}'s thoughts...`}
+              deleteThought={deleteThought}
+            />
+          )}
+        </div>
+      </div>
+      <div className="mb-3">
+        {" "}
+        <ThoughtForm name={userParam} fetchData={fetchData} />
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
+
+// import FriendList from '../components/FriendList';
+
+// import { useQuery, useMutation } from '@apollo/react-hooks';
+// import { QUERY_USER, QUERY_ME } from '../utils/queries';
+// import { ADD_FRIEND } from '../utils/mutations';
+// import Auth from '../utils/auth';
+
+// redirect to personal profile page if username is yours
+// if (Auth.loggedIn() && Auth.getProfile().data.username === userParam) {
+//   return <Redirect to="/profile" />;
+// }
+
+// if (loading) {
+//   return <div>Loading...</div>;
+// }
+
+// if (!user?.username) {
+//   return (
+//     <h4>
+//       You need to be logged in to see this. Use the navigation links above to sign up or log in!
+//     </h4>
+//   );
+// }
+
+// const handleClick = async () => {
+//   try {
+//     await addFriend({
+//       variables: { id: user._id }
+//     });
+//   } catch (e) {
+//     console.error(e);
+//   }
+// };
