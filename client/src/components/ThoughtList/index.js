@@ -36,7 +36,20 @@ const ThoughtList = ({ thoughts, title, deleteThought }) => {
               </p>
             )}
             {thought.image && (
-              <img src={thought.image} alt="related to thought"></img>
+              <div>
+                <p className="px-2">
+                  <img
+                    className="mt-3 ml-4 thought-image"
+                    style={{
+                      maxHeight: "500px",
+                      maxWidth: "500px",
+                      objectFit: "contain",
+                    }}
+                    src={thought.image}
+                    alt="S3 bucket response"
+                  />
+                </p>
+              </div>
             )}
             <div style={{ clear: "both" }}></div>
           </div>
