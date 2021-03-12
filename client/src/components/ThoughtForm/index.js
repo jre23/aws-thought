@@ -18,7 +18,7 @@ const ThoughtForm = ({ fetchData }) => {
     // POST method with formState
     const postData = async () => {
       try {
-        const res = await fetch("/api/users", {
+        await fetch("/api/users", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -26,7 +26,6 @@ const ThoughtForm = ({ fetchData }) => {
           },
           body: JSON.stringify(formState),
         });
-        const thoughtData = await res.json();
       } catch (error) {
         console.log(error);
       } finally {
