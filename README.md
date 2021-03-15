@@ -20,17 +20,15 @@ The goal for this project was to implement some of the services offered by AWS t
 
 [GitHub Repo](https://github.com/jre23/aws-thought)
 
-[EC2 Deployment](Link coming soon!)
+[EC2 Deployment](http://3.142.42.81)
 
 ## Screenshots
 
-![aws thought screenshot 1]()
+![aws thought screenshot 1](https://user-images.githubusercontent.com/69170823/111114665-c4139f00-8520-11eb-8cf2-268b709ce15a.png)
 
-![aws thought screenshot 2]()
+![aws thought screenshot 2](https://user-images.githubusercontent.com/69170823/111114709-da215f80-8520-11eb-802c-39359c6a8661.png)
 
-![aws thought screenshot 3]()
-
-![aws thought screenshot 4]()
+![aws thought screenshot 3](https://user-images.githubusercontent.com/69170823/111114789-fae9b500-8520-11eb-9c77-2643e5c8b42f.png)
 
 ## Technologies
 
